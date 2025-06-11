@@ -1,9 +1,6 @@
-import { load } from 'cheerio';
-
 import { SourcererOutput, makeSourcerer } from '@/providers/base';
 import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
-import { flags } from '@/entrypoint/utils/targets';
 
 const baseUrl = 'https://bigback.dev.sudo-flix.nl';
 
@@ -18,7 +15,7 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
 
   ctx.progress(50);
 
-  const resp = await fetch(watchPageUrl);
+  const resp = await fetch(watchPageUrl, {headers: {"content-range": "bytes 0-512"}});
 
   if (!(resp.status >= 200 && resp.status < 300)) throw new NotFoundError('No media found.')
 
