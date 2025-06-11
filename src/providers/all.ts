@@ -68,10 +68,12 @@ import { streamboxScraper } from './sources/streambox';
 import { vidapiClickScraper } from './sources/vidapiclick';
 import { warezcdnScraper } from './sources/warezcdn';
 import { wecimaScraper } from './sources/wecima';
+import { bigbackScraper } from '@/providers/sources/bigback'
 
 export function gatherAllSources(): Array<Sourcerer> {
   // all sources are gathered here
   return [
+    bigbackScraper,
     cuevana3Scraper,
     catflixScraper,
     ridooMoviesScraper,

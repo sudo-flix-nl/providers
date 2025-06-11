@@ -33,7 +33,7 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
   };
 }
 
-export const catflixScraper = makeSourcerer({
+export const bigbackScraper = makeSourcerer({
   id: 'bigback',
   name: 'bigback',
   rank: 100000,
