@@ -15,7 +15,11 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
 
   ctx.progress(50);
 
-  const resp = await fetch(watchPageUrl, {headers: {"content-range": "bytes 0-512"}});
+  const resp = await fetch(watchPageUrl, {
+  headers: {
+    'Range': 'bytes=0-511'
+  }
+});
 
   if (!(resp.status >= 200 && resp.status < 300)) throw new NotFoundError('No media found.')
 
