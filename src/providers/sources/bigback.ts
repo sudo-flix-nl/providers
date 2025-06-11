@@ -1,3 +1,4 @@
+import { flags } from '@/entrypoint/utils/targets';
 import { SourcererOutput, makeSourcerer } from '@/providers/base';
 import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
@@ -32,12 +33,12 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
           id: 'primary',
           type: 'file',
           qualities: {
-            "unknown": {
+            720: {
               type: 'mp4',
               url: watchPageUrl
             },
           },
-          flags: [],
+          flags: [flags.CORS_ALLOWED],
           captions: [],
         },
       ],
@@ -49,7 +50,7 @@ export const bigbackScraper = makeSourcerer({
   name: 'bigback',
   rank: 100000,
   disabled: false,
-  flags: [],
+  flags: [flags.CORS_ALLOWED],
   scrapeMovie: comboScraper,
   scrapeShow: comboScraper,
 });
