@@ -28,7 +28,7 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
   return {
     stream: [
       {
-        id: 'primary',
+        id: 'bigback-dev',
         captions: [],
         qualities: {
           unknown: {
