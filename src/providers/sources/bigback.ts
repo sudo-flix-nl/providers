@@ -3,6 +3,7 @@ import { load } from 'cheerio';
 import { SourcererOutput, makeSourcerer } from '@/providers/base';
 import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 import { NotFoundError } from '@/utils/errors';
+import { flags } from '@/entrypoint/utils/targets';
 
 const baseUrl = 'https://bigback.dev.sudo-flix.nl';
 
@@ -24,12 +25,21 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
   ctx.progress(90);
 
   return {
-    embeds: [
-      {
-        embedId: 'dev',
-        url: watchPageUrl,
-      },
-    ],
+      embeds: [],
+      stream: [
+        {
+          id: 'primary',
+          type: 'file',
+          qualities: {
+            "unknown": {
+              type: 'mp4',
+              url: watchPageUrl
+            },
+          },
+          flags: [flags.CORS_ALLOWED],
+          captions: [],
+        },
+      ],
   };
 }
 
