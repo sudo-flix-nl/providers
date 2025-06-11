@@ -36,7 +36,7 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
               url: watchPageUrl
             },
           },
-          flags: [flags.CORS_ALLOWED],
+          flags: [],
           captions: [],
         },
       ],
