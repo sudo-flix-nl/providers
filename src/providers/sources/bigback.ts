@@ -14,7 +14,7 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
     url = `${baseUrl}/show/${ctx.media.tmdbId}/${ctx.media.season.number}/${ctx.media.episode.number}`;
   }
   console.log(`Boutta make the request to ${url}`)
-  const data = await ctx.proxiedFetcher.full(url, { // Will implement an is_available endpoint in the bigback later, so its a little easier.
+  const data = await ctx.fetcher.full(url, { // Will implement an is_available endpoint in the bigback later, so its a little easier.
     headers: {
       Range: 'bytes=0-511',
     },
