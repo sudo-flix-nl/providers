@@ -5,7 +5,7 @@ import { NotFoundError } from '@/utils/errors';
 
 async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promise<SourcererOutput> {
   console.log("Scraping!")
-  const baseUrl = 'https://bigback.dev.sudo-flix.nl:3000';
+  const baseUrl = 'https://bigback.dev.sudo-flix.nl';
   let url: string;
 
   if (ctx.media.type === 'movie') {
@@ -14,15 +14,16 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
     url = `${baseUrl}/show/${ctx.media.tmdbId}/${ctx.media.season.number}/${ctx.media.episode.number}`;
   }
   console.log(`Boutta make the request to ${url}`)
-  const data = await ctx.fetcher.full(url, { // Will implement an is_available endpoint in the bigback later, so its a little easier.
+  const data = await fetch(url, { // Will implement an is_available endpoint in the bigback later, so its a little easier.
     headers: {
-      Range: 'bytes=0-511',
+      Range: 'bytes=0-255',
     },
   });
 
   console.log(data)
+  console.log(data.status)
 
-  if (!(data.statusCode >= 200 && data.statusCode < 300)) throw new NotFoundError('No media found.');
+  if (!(data.status >= 200 && data.status < 300)) throw new NotFoundError('No media found.');
 
   return {
     stream: [
