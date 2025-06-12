@@ -13,17 +13,13 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
     url = `${baseUrl}/show/${ctx.media.tmdbId}/${ctx.media.season.number}/${ctx.media.episode.number}`;
   }
 
-  const data = await ctx.proxiedFetcher.full(url, {
+  const data = await ctx.proxiedFetcher.full(url, { // Will implement an is_available endpoint in the bigback later, so its a little easier.
     headers: {
-      redirect: 'manual',
       Range: 'bytes=0-511',
     },
   });
 
   if (!(data.statusCode >= 200 && data.statusCode < 300)) throw new NotFoundError('No media found.');
-
-  const streamUrl = data.headers.get('location') || data.finalUrl;
-  if (!streamUrl) throw new NotFoundError('No media URL found.');
 
   return {
     stream: [
@@ -33,7 +29,7 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
         qualities: {
           unknown: {
             type: 'mp4',
-            url: streamUrl,
+            url,
           },
         },
         type: 'file',
