@@ -5,7 +5,7 @@ import { NotFoundError } from '@/utils/errors';
 
 async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promise<SourcererOutput> {
   console.log("Scraping!")
-  const baseUrl = 'https://bigback.dev.sudo-flix.nl';
+  const baseUrl = 'https://bigback-dev.sudo-flix.nl';
   let url: string;
 
   if (ctx.media.type === 'movie') {
