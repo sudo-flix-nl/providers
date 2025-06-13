@@ -8,34 +8,34 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
   const baseUrl = 'https://bigback-dev.sudo-flix.nl';
   let url: string;
 
-  if (ctx.media.type === 'movie') {
-    url = `${baseUrl}/movie/${ctx.media.tmdbId}`;
-  } else {
-    url = `${baseUrl}/show/${ctx.media.tmdbId}/${ctx.media.season.number}/${ctx.media.episode.number}`;
-  }
+  url = ctx.media.type === 'movie' ? 
+    `${baseUrl}/availability/movie/${ctx.media.tmdbId}` : 
+    `${baseUrl}/availability/show/${ctx.media.tmdbId}/${ctx.media.season.number}/${ctx.media.episode.number}`;
+  
   console.log(`Boutta make the request to ${url}`)
-  const data = await fetch(url, { // Will implement an is_available endpoint in the bigback later, so its a little easier.
-    headers: {
-      Range: 'bytes=0-255',
-    },
+  const resp = await fetch(url);
+
+  if (resp.status !== 200) throw new NotFoundError('No media found.');
+
+  const quals = await resp.json()
+
+  let qualities: { [key: string]: any } = {}
+
+  quals.forEach((element: string) => {
+    qualities[element] = {
+      type: 'mp4',
+      url: ctx.media.type === "movie" ? 
+        `${baseUrl}/stream/movie/${ctx.media.tmdbId}/${element}` : 
+        `${baseUrl}/stream/show/${ctx.media.tmdbId}/${ctx.media.season.number}/${ctx.media.episode.number}/${element}`
+    }
   });
-
-  console.log(data)
-  console.log(data.status)
-
-  if (!(data.status >= 200 && data.status < 300)) throw new NotFoundError('No media found.');
 
   return {
     stream: [
       {
         id: 'bigback-dev',
         captions: [],
-        qualities: {
-          unknown: {
-            type: 'mp4',
-            url,
-          },
-        },
+        qualities,
         type: 'file',
         flags: [flags.CORS_ALLOWED],
       },
