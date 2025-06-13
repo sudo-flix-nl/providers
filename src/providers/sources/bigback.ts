@@ -47,7 +47,7 @@ async function comboScraper(ctx: ShowScrapeContext | MovieScrapeContext): Promis
 export const bigbackScraper = makeSourcerer({
   id: 'bigback',
   name: 'Bigback',
-  rank: 300,
+  rank: 150,
   disabled: false,
   flags: [flags.CORS_ALLOWED],
   scrapeMovie: comboScraper,
